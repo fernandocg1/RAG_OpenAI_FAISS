@@ -1,0 +1,5 @@
+.env
+chatbot.env
+.venv/
+__pycache__/
+faiss_md_index/
