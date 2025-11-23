@@ -1,5 +1,5 @@
 .env
-chatbot.env
-.venv/
 __pycache__/
+.venv/
+.streamlit/
 faiss_md_index/
