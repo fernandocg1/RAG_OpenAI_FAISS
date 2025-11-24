@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 import streamlit as st
+import os.path 
 
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -16,7 +17,7 @@ if not API_KEY:
     st.error("ERRO: A chave GEMINI_API_KEY não foi encontrada. Verifique seu arquivo .env.")
     st.stop()
 
-CAMINHO_DB = "../faiss_md_index"
+CAMINHO_DB = os.path.normpath(os.path.join(BASE_DIR, '..', 'faiss_md_index'))
 
 prompt_template_str = """
 Você é um assistente de IA especializado em responder perguntas sobre estruturas condicionais em Python.

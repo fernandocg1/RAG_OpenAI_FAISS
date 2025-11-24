@@ -1,16 +1,12 @@
 import os
 from dotenv import load_dotenv
+import os.path 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DOTENV_PATH = os.path.join(BASE_DIR, '.env') 
 load_dotenv(dotenv_path=DOTENV_PATH) 
 
 API_KEY = os.environ.get("GEMINI_API_KEY") 
-
-chave_presente_g = "GEMINI_API_KEY" in os.environ
-chave_presente_a = "GOOGLE_API_KEY" in os.environ
-print(f"VERIFICAÇÃO DE CHAVE GEMINI_API_KEY: {chave_presente_g}")
-print(f"VERIFICAÇÃO DE CHAVE GOOGLE_API_KEY: {chave_presente_a}")
 
 if not API_KEY:
     raise ValueError("A chave GEMINI_API_KEY não foi encontrada no ambiente.")
@@ -21,8 +17,9 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
-PASTA_BASE = "base/estruturas_condicionais.md"
-PASTA_DB = "faiss_md_index" 
+PASTA_BASE = os.path.normpath(os.path.join(BASE_DIR, '..', 'base', 'estruturas_condicionais.md'))
+
+PASTA_DB = os.path.normpath(os.path.join(BASE_DIR, '..', 'faiss_md_index_temp'))
 
 def criar_db():
     print("--- 1. Carregando documentos...")
@@ -72,11 +69,11 @@ def criar_vetor_db(chunks):
         google_api_key=API_KEY 
     )
     
+    if not os.path.exists(PASTA_DB):
+        os.makedirs(PASTA_DB, exist_ok=True)
+
     db = FAISS.from_documents(chunks, embeddings)
     
-    if not os.path.exists(PASTA_DB):
-        os.makedirs(PASTA_DB)
-
     db.save_local(PASTA_DB)
 
 

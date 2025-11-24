@@ -1,5 +1,7 @@
 import os
 from dotenv import load_dotenv
+# Adicionar importação de os.path para garantir que normpath funcione
+import os.path 
 
 from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -14,7 +16,7 @@ API_KEY = os.environ.get("GEMINI_API_KEY")
 if not API_KEY:
     raise ValueError("ERRO: A chave GEMINI_API_KEY não foi encontrada no ambiente.")
 
-CAMINHO_DB = "faiss_md_index"
+CAMINHO_DB = os.path.normpath(os.path.join(BASE_DIR, '..', 'faiss_md_index'))
 
 prompt_template_str = """
 Você é um assistente de IA especializado em responder perguntas sobre estruturas condicionais em Python.
